@@ -12,7 +12,7 @@ contract smartSponsor {
     address eth_address;
     bytes32 message;
   }
-  mapping(uint => Pledge) pledges;
+  mapping(uint => Pledge) public pledges;
   
   // constructor
   function smartSponsor(address _benefactor) {
@@ -49,13 +49,5 @@ contract smartSponsor {
     if (msg.sender != owner || complete || refunded) throw;
     benefactor.send(this.balance);
     complete = true;
-  }
-
-  // get a pledge by its id
-  function getPledge(uint _id) constant returns (uint amount, address eth_address, bytes32 message) {
-    var p = pledges[_id];
-    amount = p.amount;
-    eth_address = p.eth_address;
-    message = p.message;
   }
 }
