@@ -20,6 +20,7 @@ We probably want to create a number of accounts
 * first account to receive the benefits of mining activity - we'll call this user "theminer"
 * second account who is the sponsored runner - "therunner"
 * third account who pledges donations to the campaign - "thesponsor"
+* fourth account who benefits from the contract - "thebenefactor"
 
 Accounts are created from the command line by using the `geth account new` command and entering a password (twice):
 
@@ -35,9 +36,10 @@ Repeat this process for two more accounts. We can then list our accounts with `g
 
 ```sh
 > geth account list
-Account #0: {4bdebee7a217d04e86ab67be5b6e108148b1fc8e} 
-Account #1: {458305055882d53663b41a00eebd0b657469843f} 
-Account #2: {225905462cf12404757852c01edfd2ec0bf0dbe9} 
+Account #0: {4bdebee7a217d04e86ab67be5b6e108148b1fc8e}
+Account #1: {458305055882d53663b41a00eebd0b657469843f}
+Account #2: {225905462cf12404757852c01edfd2ec0bf0dbe9}
+Account #3: {63de8807ac0bd63be460be0de250749c4df1dcb0}
 ```
 
 
