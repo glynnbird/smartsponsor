@@ -2,7 +2,8 @@
 // Glynn Bird - 2016
 
 contract smartSponsor {
-  address owner;
+  address public owner;
+  address public benefactor;
   bool public refunded; 
   bool public complete;
   uint public numPledges;
@@ -14,18 +15,19 @@ contract smartSponsor {
   mapping(uint => Pledge) pledges;
   
   // constructor
-  function smartSponsor() {
+  function smartSponsor(address _benefactor) {
     owner = msg.sender;
     numPledges = 0;
     refunded = false;
     complete = false;
+    benefactor = _benefactor;
   }
 
   // add a new pledge
-  function pledge(bytes32 message) {
+  function pledge(bytes32 _message) {
     if (msg.value == 0 || complete || refunded) throw;
+    pledges[numPledges] = Pledge(msg.value, msg.sender, _message);
     numPledges++;
-    pledges[numPledges] = Pledge(msg.value, msg.sender, message);
   }
 
   function getPot() constant returns (uint) {
@@ -47,5 +49,13 @@ contract smartSponsor {
     if (msg.sender != owner || complete || refunded) throw;
     owner.send(this.balance);
     complete = true;
+  }
+
+  // get a pledge by its id
+  function getPledge(uint _id) constant returns (uint amount, address eth_address, bytes32 message) {
+    var p = pledges[_id];
+    amount = p.amount;
+    eth_address = p.eth_address;
+    message = p.message;
   }
 }

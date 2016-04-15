@@ -7,8 +7,9 @@ var smartSponsor = web3.eth.contract(srcCompiled.smartSponsor.info.abiDefinition
 var theminer = eth.accounts[0];
 var therunner = eth.accounts[1];
 var thesponsor = eth.accounts[2];
+var thebenefactor = eth.accounts[3];
 
-var ss = smartSponsor.new(
+var ss = smartSponsor.new(thebenefactor,
   {
     from: web3.eth.accounts[0],
     data: srcCompiled.smartSponsor.code, 
