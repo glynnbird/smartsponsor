@@ -11,7 +11,7 @@ var thebenefactor = eth.accounts[3];
 
 var ss = smartSponsor.new(thebenefactor,
   {
-    from: web3.eth.accounts[0],
+    from: therunner,
     data: srcCompiled.smartSponsor.code, 
     gas: 3000000
   }, function(e, contract){

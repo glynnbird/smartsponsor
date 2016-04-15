@@ -47,7 +47,7 @@ contract smartSponsor {
   // send funds to the contract owner
   function drawdown() {
     if (msg.sender != owner || complete || refunded) throw;
-    owner.send(this.balance);
+    benefactor.send(this.balance);
     complete = true;
   }
 
