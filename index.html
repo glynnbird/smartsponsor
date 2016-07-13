@@ -23,9 +23,16 @@
       
       var pledge = function() {
         var v = $('#pledge').val();
-        v = parseFloat(v);
+        try {
+          v = parseFloat(v);
+        } catch(e) {
+          Materialize.toast('Please enter a value to pledge', 4000);
+        }
         v = web3.toWei(v, 'ether');
-        ss.pledge(0,{from:web3.eth.accounts[0], value:v, gas:2000000 });
+        ss.pledge(0,{from:web3.eth.accounts[0], value:v, gas:2000000 }, function(err, data) {
+          console.log(err, data);
+          Materialize.toast('Sent transaction to the blockchain', 4000);
+        });
       }
       
       var getPot = function() {
@@ -54,8 +61,8 @@
   <body>
 
     <div class="container">
-
-      <h2 id="subtitle">SmartSponsor</h2>
+      <div style="height:50px"></div>
+      <h2>SmartSponsor</h2>
       <p>I am running a marathon on 32nd of December 2016. Please help me raise money for my nominated charity</p>
       
       <div class="row">
@@ -73,7 +80,7 @@
     
       <h3>Sponsor me on my run on 25th December 2016 using Ethereum</h3>
       <div class="input-field">
-        <input id="pledge" placeholder="0.1" value="0.1" type="number">
+        <input id="pledge" placeholder="0.1" value="" type="number">
       </div>
       <a class="waves-effect waves-light btn" id="submit" href="Javascript:pledge()">Sponsor</a>
     
