@@ -32,6 +32,16 @@
         ss.pledge(0,{from:web3.eth.accounts[0], value:v, gas:2000000 }, function(err, data) {
           console.log(err, data);
           Materialize.toast('Sent transaction to the blockchain', 4000);
+          var transactionHash = data;
+          var interval = setInterval(function() {
+            web3.eth.getTransaction(transactionHash, function(err, data) {
+              console.log(err, data);
+              if (data.blockNumber !== null) {
+                clearInterval(interval);
+                getPot();
+              }
+            });
+          }, 5000);
         });
       }
       
@@ -53,28 +63,6 @@
         
         ss = web3.eth.contract(abi).at(addr);
         getPot();
-        console.log(web3.eth.accounts);
-        
-        web3.eth.isSyncing(function(error, sync){
-          console.log(error, sync);
-            if(!error) {
-                // stop all app activity
-                if(sync === true) {
-                   // we use `true`, so it stops all filters, but not the web3.eth.syncing polling
-                   web3.reset(true);
-
-                // show sync info
-                } else if(sync) {
-                   console.log(sync.currentBlock);
-                   getPot();
-
-                // re-gain app operation
-                } else {
-                    // run your app init function...
-                    getPot();
-                }
-            }
-        });
       };
       
       $( document ).ready(init);
