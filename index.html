@@ -29,7 +29,7 @@
       var getPot = function() {
         ss.getPot(function(err, data) {
           var wei = parseInt(data);
-          var eth = web.eth.fromWei(wei, 'ether');
+          var eth = web3.eth.fromWei(wei, 'ether');
           $('#debug').html(eth);
         });
       }
