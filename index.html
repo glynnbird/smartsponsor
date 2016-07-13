@@ -8,65 +8,61 @@
     <meta name="author" content="name">
     <meta name="ethereum-dapp-url-bar-style" content="transparent">
     <link rel="shortcut icon" href="icon.png" type="image/vnd.microsoft.icon">
-    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
-    <link rel='stylesheet' href='style.css' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>   
     <script type="text/javascript">
+    
+      // address of the contract
       var addr = '0x5877e8b9aa55286E7fF6E072C19dfd7fB8Cd987a';
+      
+      // abi definition
       var abi = [ { "constant": true, "inputs": [], "name": "refunded", "outputs": [ { "name": "", "type": "bool", "value": false } ], "type": "function" }, { "constant": true, "inputs": [], "name": "getPot", "outputs": [ { "name": "", "type": "uint256", "value": "100000000000000000" } ], "type": "function" }, { "constant": true, "inputs": [], "name": "complete", "outputs": [ { "name": "", "type": "bool", "value": false } ], "type": "function" }, { "constant": false, "inputs": [], "name": "refund", "outputs": [], "type": "function" }, { "constant": false, "inputs": [ { "name": "_message", "type": "bytes32" } ], "name": "pledge", "outputs": [], "type": "function" }, { "constant": true, "inputs": [], "name": "benefactor", "outputs": [ { "name": "", "type": "address", "value": "0x552d6ae0152c7a1c4c79aba047ec3f0a2af5177a" } ], "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [ { "name": "", "type": "address", "value": "0xd7a75f8c9fc6db3b1ac935c60b400f93240ddd73" } ], "type": "function" }, { "constant": true, "inputs": [], "name": "numPledges", "outputs": [ { "name": "", "type": "uint256", "value": "1" } ], "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "pledges", "outputs": [ { "name": "amount", "type": "uint256", "value": "0" }, { "name": "eth_address", "type": "address", "value": "0x0000000000000000000000000000000000000000" }, { "name": "message", "type": "bytes32", "value": "0x0000000000000000000000000000000000000000000000000000000000000000" } ], "type": "function" }, { "constant": false, "inputs": [], "name": "drawdown", "outputs": [], "type": "function" }, { "inputs": [ { "name": "_benefactor", "type": "address" } ], "type": "constructor" } ];
-     
+
+      var ss = null;
+      
+      var pledge = function() {
+        
+        ss.pledge()
+      }
+      
+      var getPot = function() {
+        ss.getPot(function(err, data) {
+          var wei = parseInt(data);
+          var eth = web.eth.fromWei(wei, 'ether');
+          $('#debug').html(eth);
+        });
+      }
 
       var init = function() {
-        if (!web3) {
-          alert('Please run in the Mist browser');    
+        if (typeof web3 === 'undefined') {
+          Materialize.toast('Please run in the Mist browser', 4000);
           return;
         }
         
-        var ss = web3.eth.contract(abi).at(addr);
-        ss.getPot(function(err, data) {
-          $('#debug').html(JSON.stringify(data));
-        });
+        ss = web3.eth.contract(abi).at(addr);
+        getPot();
       };
+      
+      $( document ).ready(init);
 
     </script>
   </head>
   <body>
 
-  <div class="content">
+    <div class="container">
 
-    <h2 id="subtitle">SmartSponsor</h2>
-    <p>Sponsor me on my run on 25th December 2016 using Ethereum</p>
+      <h2 id="subtitle">SmartSponsor</h2>
+      <p>Sponsor me on my run on 25th December 2016 using Ethereum</p>
    
-    <div id="debug"></div>
-    <input id="pledge" placeholder="0.1">
-    <button id="submit">Sponsor</button>
+      <div id="debug"></div>
     
-
-    <div id="results">
-      <h3 id="support" class="results"></h3><h3 id="opposition" class="results"></h3>
+      <div class="input-field">
+        <input id="pledge" placeholder="0.1" value="0.1" type="number">
+      </div>
+      <a class="waves-effect waves-light btn" id="submit" href="Javascript:pledge()">Sponsor</a>
+    
     </div>
 
-    <div id="message">
-      This Browser does not support Ethereum apps. <br> <a href="http://ethereum.org">Download Mist</a>
-    </div>
-
-    <div id="status"></div>
-
-  </div>
-
-  <div id="add-account">
-    Click here to add an account on Mist
-  </div>
-
-  <!-- <script src="https://raw.githubusercontent.com/ethereum/web3.js/0.16.0/dist/web3.min.js"></script> -->
-  <script type="text/javascript">
-
-   function autorun(){
-      init();
-   }
-   if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
-   else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
-   else window.onload = autorun;
-  </script>
   </body>
 </html>
