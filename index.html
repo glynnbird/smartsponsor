@@ -29,8 +29,10 @@
           Materialize.toast('Please enter a value to pledge', 4000);
         }
         v = web3.toWei(v, 'ether');
+        $('#pledgebutton').attr("disabled", true);
         ss.pledge(0,{from:web3.eth.accounts[0], value:v, gas:2000000 }, function(err, data) {
           console.log(err, data);
+          $('#progress').removeClass('hide');
           Materialize.toast('Sent transaction to the blockchain', 4000);
           var transactionHash = data;
           var interval = setInterval(function() {
@@ -38,6 +40,8 @@
               console.log(err, data);
               if (data.blockNumber !== null) {
                 clearInterval(interval);
+                $('#progress').addClass('hide');
+                $('#pledgebutton').attr("disabled", false);
                 getPot();
               }
             });
@@ -89,11 +93,14 @@
       
       <div id="debug"></div>
     
-      <h3>Sponsor me on my run on 25th December 2016 using Ethereum</h3>
+      <h4>Sponsor me on my run on 25th December 2016 using Ethereum</h3>
       <div class="input-field">
         <input id="pledge" placeholder="0.1" value="" type="number">
       </div>
-      <a class="waves-effect waves-light btn" id="submit" href="Javascript:pledge()">Sponsor</a>
+      <a class="waves-effect waves-light btn" id="pledgebutton" href="Javascript:pledge()">Sponsor</a>
+      <div id="progress" class="progress hide">
+          <div class="indeterminate"></div>
+      </div>
     
     </div>
 
