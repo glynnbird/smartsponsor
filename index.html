@@ -35,6 +35,8 @@
         });
       }
       
+
+      
       var getPot = function() {
         ss.getPot(function(err, data) {
           var wei = parseInt(data);
@@ -52,6 +54,25 @@
         ss = web3.eth.contract(abi).at(addr);
         getPot();
         console.log(web3.eth.accounts);
+        
+        web3.eth.isSyncing(function(error, sync){
+            if(!error) {
+                // stop all app activity
+                if(sync === true) {
+                   // we use `true`, so it stops all filters, but not the web3.eth.syncing polling
+                   web3.reset(true);
+
+                // show sync info
+                } else if(sync) {
+                   console.log(sync.currentBlock);
+                   getPot();
+
+                // re-gain app operation
+                } else {
+                    // run your app init function...
+                }
+            }
+        });
       };
       
       $( document ).ready(init);
