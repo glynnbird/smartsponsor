@@ -56,6 +56,7 @@
         console.log(web3.eth.accounts);
         
         web3.eth.isSyncing(function(error, sync){
+          console.log(error, sync);
             if(!error) {
                 // stop all app activity
                 if(sync === true) {
@@ -70,6 +71,7 @@
                 // re-gain app operation
                 } else {
                     // run your app init function...
+                    getPot();
                 }
             }
         });
