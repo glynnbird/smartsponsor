@@ -22,8 +22,10 @@
       var ss = null;
       
       var pledge = function() {
-        
-        ss.pledge()
+        var v = $('#pledge').val();
+        v = parseFloat(v);
+        v = web3.toWei(v, 'ether');
+        ss.pledge(0,{from:eth.accounts[0], value:v, gas:2000000 });
       }
       
       var getPot = function() {
